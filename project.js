@@ -106,14 +106,16 @@ $('.board button').on('click',function() {
   var col = $(this).closest("td").index();
 
   var bottomAvail = checkBottom(col);
-  var validMove = false;
+  var validMove = true;
 
   validMove = changeColor(bottomAvail,col,currentColor);
 
   if (horizontalWinCheck() || verticalWinCheck() || diagonalWinCheck()) {
     gameEnd(currentName);
   }
-  if (validMove) {
+  if (!validMove) {
+    $('h3').text("Invalid move, please try again");
+  } else {
     currentPlayer = currentPlayer * -1 ;
 
     if (currentPlayer === 1) {
@@ -125,8 +127,5 @@ $('.board button').on('click',function() {
       $('h3').text(currentName+": it is your turn, please pick a column to drop your red chip.");
       currentColor = player2Color;
     }
-  } else {
-    $('h3').text("Invalid move, please try again");
   }
-
 })
