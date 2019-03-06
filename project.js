@@ -15,6 +15,9 @@ function reportWin(rowNum,colNum) {
 }
 
 function changeColor(rowIndex,colIndex,color) {
+  if (rowIndex === undefined) {
+    return false;
+  }
   return table.eq(rowIndex).find('td').eq(colIndex).find('button').css('background-color',color);
 }
 
@@ -103,23 +106,26 @@ $('.board button').on('click',function() {
   var col = $(this).closest("td").index();
 
   var bottomAvail = checkBottom(col);
+  var validMove = true;
 
-  changeColor(bottomAvail,col,currentColor);
+  validMove = changeColor(bottomAvail,col,currentColor);
 
   if (horizontalWinCheck() || verticalWinCheck() || diagonalWinCheck()) {
     gameEnd(currentName);
   }
+  if (!validMove) {
+    $('h3').text("Invalid move, please try again");
+  } else {
+    currentPlayer = currentPlayer * -1 ;
 
-  currentPlayer = currentPlayer * -1 ;
-
-  if (currentPlayer === 1) {
-    currentName = player1;
-    $('h3').text(currentName+": it is your turn, please pick a column to drop your blue chip.");
-    currentColor = player1Color;
-  }else {
-    currentName = player2
-    $('h3').text(currentName+": it is your turn, please pick a column to drop your red chip.");
-    currentColor = player2Color;
+    if (currentPlayer === 1) {
+      currentName = player1;
+      $('h3').text(currentName+": it is your turn, please pick a column to drop your blue chip.");
+      currentColor = player1Color;
+    }else {
+      currentName = player2
+      $('h3').text(currentName+": it is your turn, please pick a column to drop your red chip.");
+      currentColor = player2Color;
+    }
   }
-
 })
